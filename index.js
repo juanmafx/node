@@ -33,18 +33,19 @@ const server = http.createServer((req, res) => {
 
     req.on('end', () => {
         buffer += decoder.end();
+        // Send response
+        res.end('HW');
+
+        console.log(
+            '***\nRequested: ', trimedPath,
+            '\nWhith this method: ', method,
+            '\nQuery string parameters ', qso,
+            '\nHeaders: ', headers,
+            '\nPayload: ', buffer,
+            '\n***');
     })
 
-    // Send response
-    res.end('HW');
 
-    console.log(
-        '***\nRequested: ' , trimedPath ,
-        '\nWhith this method: ' ,method ,
-        '\nQuery string parameters ', qso,
-        '\nHeaders: ', headers,
-        '\nPayload: ', buffer,
-        '\n***');
 });
 
 server.listen(4000, () => {
