@@ -7,36 +7,29 @@ const url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
 
 const server = http.createServer((req, res) => {
-
     // Get the url and parse it
     var parsedUrl = url.parse(req.url, true)
-
     // Get path
     var path = parsedUrl.pathname;
     var trimedPath = path.replace(/^\/+|\/+$/g, '');
-
     //Get the query string as and object
     var qso = parsedUrl.query;
-
     //Get the HTTP Method
     var method = req.method.toLocaleLowerCase();
-
     //Get the headers and object
     var headers = req.headers;
-
     //Get the payload, if any
     var decoder = new StringDecoder('utf-8');
     var buffer = '';
-    req.on('data', function (data) {
+    req.on('data', (data) => {
         buffer += decoder.write(data);
     });
 
+
     req.on('end', () => {
         buffer += decoder.end();
-
         //Chose the handler this request should go. If not execute not found handler
         var choseHandler = typeof (router[trimedPath]) !== 'undefined' ? router[trimedPath] : handlers.notFound;
-
         //Construct the data object to sended to the handler
         var data = {
             'trimedPath': trimedPath,
@@ -58,7 +51,7 @@ const server = http.createServer((req, res) => {
             var payloadString = JSON.stringify(payload);
 
             //Return the response
-            res.setHeader('Content-Type','aplication/json')
+            res.setHeader('Content-Type', 'aplication/json')
             res.writeHead(statusCode);
             res.end(payloadString);
 
