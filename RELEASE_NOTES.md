@@ -1,25 +1,16 @@
-# Release Notes: 2.0.0
+# Release Notes: 2.0.1
 
-**Status:** prepared. No tag or GitHub release has been created.
+Version 2.0.1 is a documentation-only release. It contains no code behaviour change from 2.0.0.
 
-Version 2.0.0 rewrites the original 2021 course-based server as a modular, tested, dependency-free service on Node.js 24.
+## Changes
 
-## Highlights
+- The changelog and release notes no longer describe 2.0.0 as unreleased.
+- The security audit marks finding A-01, a TLS private key in Git history, as resolved. On 2026-11-24 the public history was rewritten to keep only the 2026 modernization commits, so no branch or tag contains the key.
 
-- Clear module boundaries for configuration, HTTP, routing, handlers, security, and logging.
-- Bounded input, safe routing, redacted echo output, metadata-only logs, and TLS 1.3 in production.
-- Automated tests over real sockets, with reports in `reports/tests/`.
+## Security note
+
+The key was published before the rewrite. Treat it as compromised and do not reuse it. See [docs/SECURITY_AUDIT.md](docs/SECURITY_AUDIT.md).
 
 ## Upgrading
 
-1. Install Node.js 24 or later.
-2. Start with `npm start` instead of `node index.js`.
-3. Replace `/mirrow` with `/mirror`, and update clients to the new field names.
-4. Provide your own certificate through `TLS_KEY_PATH` and `TLS_CERT_PATH`.
-5. Set `HOST` if the service must listen beyond loopback.
-
-## Known issue
-
-A previously committed private key remains in Git history. Do not reuse it. See `docs/SECURITY_AUDIT.md`.
-
-The full list of changes is in [CHANGELOG.md](CHANGELOG.md).
+No action is needed when upgrading from 2.0.0. For the changes introduced in 2.0.0, see [CHANGELOG.md](CHANGELOG.md).

@@ -2,7 +2,14 @@
 
 This project follows [Semantic Versioning](https://semver.org/) and the [Keep a Changelog](https://keepachangelog.com/) format.
 
-## [2.0.0] - Unreleased
+## [2.0.1] - 2026-11-24
+
+### Documentation
+
+- Corrected the release notes, changelog, and security audit to reflect the published 2.0.0 release and the rewritten repository history.
+- No code behaviour change.
+
+## [2.0.0] - 2026-11-24
 
 ### Breaking
 
@@ -25,7 +32,7 @@ This project follows [Semantic Versioning](https://semver.org/) and the [Keep a 
 ### Security
 
 - Fixed the findings marked as fixed in `docs/SECURITY_AUDIT.md`.
-- Removed the tracked TLS key and certificate from the working tree. The key remains in history and must be treated as compromised.
+- Removed the tracked TLS key and certificate. The key was published with earlier versions and must be treated as compromised.
 
 ## [1.0.0] - 2021-01-31
 

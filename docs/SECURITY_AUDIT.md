@@ -5,13 +5,13 @@
 - **Method:** manual code review, automated tests, adversarial socket probes, secret scanning, and reproduction of the routing defects against a disposable local copy
 - **Limits:** no third-party penetration test and no load testing
 
-Detail is intentionally limited because the affected version 1 code remains on the default branch until this work is merged.
+Detail is intentionally limited because commits containing the affected version 1 code may remain reachable by direct SHA on GitHub until unreferenced objects are purged.
 
 ## Findings
 
 | ID | Severity | Finding | Status |
 | --- | --- | --- | --- |
-| A-01 | Critical | A TLS private key was tracked in the repository | **Open:** removed from this branch's tree, still present in history |
+| A-01 | Critical | A TLS private key was tracked in the repository | Resolved: removed from the tree, and from history by the 2026-11-24 rewrite. Treat the key as compromised |
 | A-02 | High | A crafted request path could terminate the process | Fixed |
 | A-03 | High | A crafted request path could leave a request hanging | Fixed |
 | A-04 | High | Unbounded request bodies allowed memory exhaustion | Fixed |
@@ -30,11 +30,13 @@ Detail is intentionally limited because the affected version 1 code remains on t
 | A-17 | Medium | A closed log pipe terminated the process | Fixed |
 | A-18 | Low | HSTS was sent outside production, including on `localhost` | Fixed |
 
+## Resolved: A-01, private key in history
+
+The key is a self-signed `localhost` key. It was removed from the tree, and on 2026-11-24 the public history was rewritten to keep only the 2026 modernization commits, so no branch or tag contains it. Because it was published, **treat it as compromised and never reuse it.**
+
 ## Open items
 
-### A-01: private key in history
-
-The key is a self-signed `localhost` key. It is gone from this branch, but remains in earlier commits and on remote branches. **Treat it as compromised and never reuse it.** Removing it from history requires a history rewrite and force-push, which is the owner's decision.
+None.
 
 ## Accepted risks
 

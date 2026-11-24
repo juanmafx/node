@@ -1,6 +1,6 @@
 {
   "name": "node-http-api",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Dependency-free HTTP and HTTPS JSON API server built on the Node.js standard library, with secure defaults.",
   "private": true,
   "license": "UNLICENSED",
