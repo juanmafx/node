@@ -2,7 +2,7 @@
 
 - **Date:** 2026-11-23
 - **Scope:** all tracked files on the `modernize/2026` branch, and the names of key material in repository history
-- **Method:** manual code review, automated tests, and reproduction of the routing defects against a disposable local copy
+- **Method:** manual code review, automated tests, adversarial socket probes, secret scanning, and reproduction of the routing defects against a disposable local copy
 - **Limits:** no third-party penetration test and no load testing
 
 Detail is intentionally limited because the affected version 1 code remains on the default branch until this work is merged.
@@ -25,6 +25,10 @@ Detail is intentionally limited because the affected version 1 code remains on t
 | A-12 | Low | All HTTP methods accepted on every route | Fixed |
 | A-13 | Low | Deprecated `url.parse` API | Fixed |
 | A-14 | Low | Key file name casing prevented startup on case-sensitive file systems | Fixed |
+| A-15 | High | The echo route returned credential-style headers missing from a fixed list | Fixed |
+| A-16 | Medium | Timed-out and rejected connections could stay open, with no idle socket or TLS handshake limit | Fixed |
+| A-17 | Medium | A closed log pipe terminated the process | Fixed |
+| A-18 | Low | HSTS was sent outside production, including on `localhost` | Fixed |
 
 ## Open items
 
@@ -36,6 +40,8 @@ The key is a self-signed `localhost` key. It is gone from this branch, but remai
 
 - No built-in rate limiting. The recommended deployment places this in a reverse proxy.
 - No authentication. The available routes expose no private data.
+- No connection-count limit. The recommended deployment places this in a reverse proxy.
+- Header redaction on the staging echo route is name-based, so a secret in an unconventionally named header is still echoed.
 
 ## Not applicable
 

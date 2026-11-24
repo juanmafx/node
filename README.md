@@ -19,7 +19,7 @@ It began as a learning exercise in the raw `http` and `https` modules. Version 2
 | --- | --- | --- | --- |
 | `/ping` | `GET`, `HEAD` | `200` with `{}` | All environments |
 | `/sample` | `GET`, `HEAD` | `406` with `{"name":"sample handler"}`, a fixed demonstration of a custom status | All environments |
-| `/mirror` | `GET`, `POST`, `PUT`, `PATCH`, `DELETE` | `200` echoing path, query, method, headers, and body, with credential headers redacted | Staging only |
+| `/mirror` | `GET`, `POST`, `PUT`, `PATCH`, `DELETE` | `200` echoing path, query, method, headers, and body, with credential-style headers redacted by name pattern | Staging only |
 
 Other paths return `404`, and unsupported methods return `405` with an `Allow` header. Error bodies have the shape `{"error":"<code>"}`.
 
@@ -95,7 +95,7 @@ Copy `.env.example` to `.env` and start with `node --env-file=.env src/main.js`,
 sqlite3 requests.db < db/schema.sql
 ```
 
-The automated tests apply the schema on SQLite. It is written for PostgreSQL too, but has not been run there.
+The automated tests apply the schema on SQLite. It was also applied manually to PostgreSQL 17, including a repeat run and a constraint check.
 
 ## Testing
 
@@ -104,13 +104,13 @@ npm test
 npm run test:report
 ```
 
-The suite uses the built-in `node:test` runner, with unit tests and integration tests against real sockets. `test:report` regenerates the committed output in [`reports/tests/`](reports/tests/): a readable log with coverage, JUnit XML, and a JSON summary. CI runs `npm test` on every push and pull request.
+The suite uses the built-in `node:test` runner, with unit tests and integration tests against real sockets. `test:report` regenerates the committed output in [`reports/tests/`](reports/tests/): a readable log with coverage, JUnit XML, and a JSON summary. The CI workflow is configured to run `npm test` on pushes to `main`, `stg`, `dev`, and `modernize/2026`, and on pull requests.
 
 ## Security
 
 - Request bodies, headers, and connection lifetimes are bounded.
 - Routing cannot resolve inherited object properties.
-- Production requires TLS 1.3 and refuses to start without credentials.
+- Production requires TLS 1.3, sends HSTS, and refuses to start without credentials.
 - Logs record request metadata only, never headers, query values, or bodies.
 - No private keys are stored in the working tree.
 
@@ -118,7 +118,7 @@ The service has no authentication or rate limiting, because it exposes no privat
 
 ## Attribution
 
-Version 1 closely followed the HTTP and HTTPS server lesson from Pirple's [The Node.js Master Class](https://github.com/pirple/The-NodeJS-Master-Class). The unified request handler, the handler-and-router pattern, and the `sample` route come from that course. Version 2 is a rewrite that keeps those ideas. See [NOTICE.md](NOTICE.md).
+Version 1 closely followed the HTTP and HTTPS server lesson from Pirple's [The Node.js Master Class](https://github.com/pirple/The-NodeJS-Master-Class). The unified request handler, the handler-and-router pattern, and the `sample` and `ping` routes come from that course. Version 2 is a rewrite that keeps those ideas. See [NOTICE.md](NOTICE.md).
 
 ## License
 

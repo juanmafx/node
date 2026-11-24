@@ -3,6 +3,8 @@ import { loadConfig } from './config/load-config.js';
 import { createLogger } from './observability/create-logger.js';
 import { loadTlsCredentials } from './security/load-tls-credentials.js';
 
+process.stdout.on('error', () => {});
+
 const logger = createLogger();
 
 try {

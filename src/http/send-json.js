@@ -9,12 +9,12 @@ const BASE_SECURITY_HEADERS = Object.freeze({
 
 const STRICT_TRANSPORT_SECURITY = 'max-age=31536000; includeSubDomains';
 
-export function sendJson(response, { statusCode, payload, headers = {}, secure, requestId }) {
+export function sendJson(response, { statusCode, payload, headers = {}, strictTransport, requestId }) {
   if (response.headersSent || response.destroyed) return;
   const body = JSON.stringify(payload ?? {});
   response.writeHead(statusCode, {
     ...BASE_SECURITY_HEADERS,
-    ...(secure ? { 'Strict-Transport-Security': STRICT_TRANSPORT_SECURITY } : {}),
+    ...(strictTransport ? { 'Strict-Transport-Security': STRICT_TRANSPORT_SECURITY } : {}),
     ...headers,
     'Content-Type': 'application/json; charset=utf-8',
     'Content-Length': Buffer.byteLength(body),

@@ -53,6 +53,26 @@ describe('production over HTTPS', () => {
   });
 });
 
+describe('staging over HTTPS', () => {
+  it('does not send HSTS', async () => {
+    const certificate = createEphemeralCertificate();
+    const context = await startApplication({
+      env: { TLS_KEY_PATH: certificate.keyPath, TLS_CERT_PATH: certificate.certPath },
+      tlsCredentials: certificate.credentials,
+    });
+    const response = await sendRequest({
+      port: context.addresses.https,
+      path: '/ping',
+      secure: true,
+      tls: { ca: certificate.credentials.cert, servername: 'localhost' },
+    });
+    await context.application.stop();
+    certificate.cleanup();
+    assert.equal(response.statusCode, 200);
+    assert.equal(response.headers['strict-transport-security'], undefined);
+  });
+});
+
 describe('startup failure', () => {
   it('releases the plaintext listener when the HTTPS port is taken', async () => {
     const certificate = createEphemeralCertificate();
@@ -95,6 +115,30 @@ describe('process entry point', () => {
     });
     const port = await listening;
     assert.equal((await sendRequest({ port, path: '/ping' })).statusCode, 200);
+    child.kill('SIGTERM');
+    const [code] = await once(child, 'exit');
+    assert.equal(code, 0);
+  });
+
+  it('keeps serving after its log pipe closes', async () => {
+    const child = spawn(process.execPath, [MAIN], {
+      env: { PATH: process.env.PATH, HTTP_PORT: '0' },
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    const port = await new Promise((resolve) => {
+      let output = '';
+      child.stdout.on('data', (chunk) => {
+        output += chunk;
+        const match = output.match(/"event":"server_listening".*?"port":(\d+)/);
+        if (match) resolve(Number(match[1]));
+      });
+    });
+    child.stdout.destroy();
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      assert.equal((await sendRequest({ port, path: '/ping' })).statusCode, 200);
+    }
+    assert.equal(child.exitCode, null);
     child.kill('SIGTERM');
     const [code] = await once(child, 'exit');
     assert.equal(code, 0);

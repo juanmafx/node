@@ -22,10 +22,12 @@ function describeFailure(error, logger, requestId) {
   return new HttpError(500, 'internal_error');
 }
 
-export function createRequestListener({ router, logger, config, secure }) {
+export function createRequestListener({ router, logger, config, secure, idleTimeoutMs }) {
   const transport = secure ? 'https' : 'http';
+  const strictTransport = secure && config.environment === 'production';
 
   return async function handleRequest(request, response) {
+    request.socket.setTimeout(idleTimeoutMs);
     const startedAt = performance.now();
     const requestId = randomUUID();
     let loggedPath = null;
@@ -58,7 +60,7 @@ export function createRequestListener({ router, logger, config, secure }) {
       sendJson(response, {
         statusCode: result.statusCode,
         payload: result.payload,
-        secure,
+        strictTransport,
         requestId,
       });
     } catch (error) {
@@ -68,7 +70,7 @@ export function createRequestListener({ router, logger, config, secure }) {
         statusCode: failure.statusCode,
         payload: { error: failure.code },
         headers: { ...failure.headers, ...closeConnection },
-        secure,
+        strictTransport,
         requestId,
       });
     }

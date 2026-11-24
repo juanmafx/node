@@ -3,7 +3,7 @@ import { describe, it } from 'node:test';
 import { REDACTED_VALUE, redactHeaders } from '../../src/security/redact-headers.js';
 
 describe('redactHeaders', () => {
-  for (const name of ['authorization', 'Cookie', 'proxy-authorization', 'set-cookie', 'x-api-key', 'x-auth-token', 'x-csrf-token']) {
+  for (const name of ['authorization', 'Cookie', 'proxy-authorization', 'set-cookie', 'x-api-key', 'x-auth-token', 'x-csrf-token', 'x-access-token', 'x-amz-security-token', 'x-goog-api-key', 'api-key', 'private-token', 'x-session-token', 'x-vault-token']) {
     it(`redacts ${name}`, () => {
       assert.equal(redactHeaders({ [name]: 'placeholder' })[name], REDACTED_VALUE);
     });

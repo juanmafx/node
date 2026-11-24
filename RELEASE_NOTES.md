@@ -1,6 +1,6 @@
 # Release Notes: 2.0.0
 
-**Status:** prepared, not tagged or published.
+**Status:** prepared. No tag or GitHub release has been created.
 
 Version 2.0.0 rewrites the original 2021 course-based server as a modular, tested, dependency-free service on Node.js 24.
 

@@ -134,6 +134,27 @@ describe('HTTP API', () => {
     assert.equal((await call({ path: '/ping' })).statusCode, 200);
   });
 
+  it('closes the connection after rejecting malformed HTTP', async () => {
+    const closed = await new Promise((resolve) => {
+      const socket = net.connect({ port, host: '127.0.0.1', allowHalfOpen: true }, () => socket.write('NOT HTTP\r\n\r\n'));
+      let probe;
+      const finish = (result) => {
+        clearInterval(probe);
+        clearTimeout(deadline);
+        socket.destroy();
+        resolve(result);
+      };
+      const deadline = setTimeout(() => finish(false), 2_000);
+      socket.resume();
+      socket.on('end', () => {
+        probe = setInterval(() => socket.write('x'), 25);
+      });
+      socket.on('error', () => finish(true));
+      socket.on('close', () => finish(true));
+    });
+    assert.equal(closed, true);
+  });
+
   it('logs metadata but never headers, query values, or payloads', async () => {
     await call({
       path: '/mirror?token=query-marker',
