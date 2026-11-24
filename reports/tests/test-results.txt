@@ -1,0 +1,125 @@
+▶ HTTP API
+  ✔ answers ping with an empty JSON object (47.571367ms)
+  ✔ answers HEAD without a body (5.434994ms)
+  ✔ keeps the sample handler status and payload (8.852587ms)
+  ✔ normalizes surrounding slashes when routing (3.466571ms)
+  ✔ returns 404 for unknown routes (3.146165ms)
+  ✔ does not resolve the inherited property /__proto__ (4.950739ms)
+  ✔ does not resolve the inherited property /constructor (4.998992ms)
+  ✔ does not resolve the inherited property /toString (5.403634ms)
+  ✔ does not resolve the inherited property /hasOwnProperty (5.654128ms)
+  ✔ returns 405 with Allow for an unsupported method (3.244689ms)
+  ✔ refuses TRACE on the mirror (2.976877ms)
+  ✔ mirrors the request and redacts credentials (3.65971ms)
+  ✔ serves reflected markup as inert JSON (5.476847ms)
+  ✔ rejects an oversized declared body (2.813353ms)
+  ✔ rejects an oversized chunked body (2.66662ms)
+  ✔ rejects invalid UTF-8 (2.624018ms)
+  ✔ sets the baseline security headers without HSTS on plaintext (2.169449ms)
+  ✔ ignores a client-supplied request id (2.198742ms)
+  ✔ answers malformed HTTP with 400 and stays available (4.694529ms)
+  ✔ logs metadata but never headers, query values, or payloads (3.442571ms)
+  ✔ escapes control characters in logged paths (3.965756ms)
+✔ HTTP API (162.944806ms)
+▶ production over HTTPS
+  ✔ opens no plaintext listener (1.929518ms)
+  ✔ serves ping with HSTS (47.311189ms)
+  ✔ does not expose the mirror (12.802381ms)
+  ✔ refuses TLS 1.2 clients (6.059667ms)
+✔ production over HTTPS (125.447742ms)
+▶ startup failure
+  ✔ releases the plaintext listener when the HTTPS port is taken (23.346536ms)
+✔ startup failure (23.853991ms)
+▶ process entry point
+  ✔ boots, serves, and exits cleanly on SIGTERM (184.198747ms)
+  ✔ exits non-zero with a clear error when production lacks TLS (139.355352ms)
+✔ process entry point (324.178534ms)
+▶ loadConfig
+  ✔ defaults to staging on loopback with the mirror enabled (4.17523ms)
+  ✔ uses production ports and disables plaintext and the mirror (0.435177ms)
+  ✔ refuses production without TLS (1.367613ms)
+  ✔ refuses a partial TLS configuration (0.715091ms)
+  ✔ refuses the unknown environment prod (0.758044ms)
+  ✔ refuses the unknown environment constructor (0.49336ms)
+  ✔ refuses the unknown environment __proto__ (0.288513ms)
+  ✔ refuses the invalid port abc (2.508016ms)
+  ✔ refuses the invalid port -1 (0.441808ms)
+  ✔ refuses the invalid port 70000 (0.256343ms)
+  ✔ refuses the invalid port 1.5 (0.240552ms)
+  ✔ refuses a zero or oversized body limit (0.476337ms)
+  ✔ applies valid overrides (0.334186ms)
+✔ loadConfig (17.802079ms)
+▶ parseRequestTarget
+  ✔ trims leading and trailing slashes (6.47007ms)
+  ✔ keeps a protocol-relative target on the local origin (0.497386ms)
+  ✔ collects repeated query keys into arrays (5.869506ms)
+  ✔ stores prototype-named query keys as inert data (0.456455ms)
+  ✔ rejects the target * (4.440761ms)
+  ✔ rejects the target http://example.test/ping (0.336438ms)
+  ✔ rejects the target  (0.309185ms)
+  ✔ rejects the target undefined (0.261087ms)
+  ✔ trims a long run of slashes in linear time (33.765606ms)
+✔ parseRequestTarget (65.13668ms)
+▶ readBody
+  ✔ reassembles a multibyte character split across chunks (28.235746ms)
+  ✔ rejects an oversized declared length before reading (4.917217ms)
+  ✔ rejects an oversized stream without a declared length (0.818258ms)
+  ✔ accepts a body exactly at the limit (5.622446ms)
+  ✔ rejects invalid UTF-8 (1.186741ms)
+  ✔ rejects a stream closed before completion (4.413491ms)
+✔ readBody (53.387293ms)
+▶ redactHeaders
+  ✔ redacts authorization (2.901771ms)
+  ✔ redacts Cookie (0.325867ms)
+  ✔ redacts proxy-authorization (0.366222ms)
+  ✔ redacts set-cookie (0.489342ms)
+  ✔ redacts x-api-key (0.504061ms)
+  ✔ redacts x-auth-token (0.582456ms)
+  ✔ redacts x-csrf-token (0.840255ms)
+  ✔ keeps non-sensitive headers and does not mutate the input (0.68374ms)
+✔ redactHeaders (12.63344ms)
+▶ db/schema.sql
+  ✔ applies idempotently (4.230874ms)
+  ✔ accepts a valid row (1.637829ms)
+  ✔ enforces its check constraints (2.034791ms)
+✔ db/schema.sql (11.685849ms)
+ℹ tests 67
+ℹ suites 9
+ℹ pass 67
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 780.286558
+ℹ start of coverage report
+ℹ -----------------------------------------------------------------------------
+ℹ file                         | line % | branch % | funcs % | uncovered lines
+ℹ -----------------------------------------------------------------------------
+ℹ src                          |        |          |         | 
+ℹ  app                         |        |          |         | 
+ℹ   create-application.js      | 100.00 |   100.00 |   87.50 | 
+ℹ  config                      |        |          |         | 
+ℹ   load-config.js             | 100.00 |   100.00 |  100.00 | 
+ℹ  handlers                    |        |          |         | 
+ℹ   mirror.js                  | 100.00 |   100.00 |  100.00 | 
+ℹ   ping.js                    | 100.00 |   100.00 |  100.00 | 
+ℹ   sample.js                  | 100.00 |   100.00 |  100.00 | 
+ℹ  http                        |        |          |         | 
+ℹ   create-request-listener.js | 100.00 |    91.30 |  100.00 | 
+ℹ   http-error.js              | 100.00 |   100.00 |  100.00 | 
+ℹ   parse-request-target.js    |  94.29 |    94.12 |  100.00 | 32-33
+ℹ   read-body.js               | 100.00 |   100.00 |  100.00 | 
+ℹ   send-json.js               | 100.00 |    50.00 |  100.00 | 
+ℹ  main.js                     | 100.00 |    66.67 |  100.00 | 
+ℹ  observability               |        |          |         | 
+ℹ   create-logger.js           | 100.00 |   100.00 |  100.00 | 
+ℹ  routing                     |        |          |         | 
+ℹ   build-routes.js            | 100.00 |   100.00 |  100.00 | 
+ℹ   create-router.js           | 100.00 |   100.00 |  100.00 | 
+ℹ  security                    |        |          |         | 
+ℹ   load-tls-credentials.js    |  83.33 |    50.00 |  100.00 | 5
+ℹ   redact-headers.js          | 100.00 |   100.00 |  100.00 | 
+ℹ -----------------------------------------------------------------------------
+ℹ all files                    |  99.31 |    93.89 |   97.73 | 
+ℹ -----------------------------------------------------------------------------
+ℹ end of coverage report

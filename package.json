@@ -1,0 +1,18 @@
+{
+  "name": "node-http-api",
+  "version": "2.0.0",
+  "description": "Dependency-free, hardened HTTP and HTTPS JSON API server built on the Node.js standard library.",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "main": "src/main.js",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node --test \"test/**/*.test.js\"",
+    "test:report": "node scripts/generate-test-report.js",
+    "cert:dev": "sh scripts/generate-dev-cert.sh"
+  }
+}
