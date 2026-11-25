@@ -1,4 +1,4 @@
-# node
+# node-secure-json-api
 
 A small, dependency-free HTTP and HTTPS JSON API server built only on the Node.js standard library, with secure defaults.
 
